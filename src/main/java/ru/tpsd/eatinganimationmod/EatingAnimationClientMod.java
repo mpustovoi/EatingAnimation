@@ -25,22 +25,22 @@ public class EatingAnimationClientMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         for (Item item : FOOD_ITEMS) {
-            ModelPredicateProviderRegistry.register(item, new Identifier("eat"), (itemStack, clientWorld, livingEntity, i) -> {
+            ModelPredicateProviderRegistry.register(item, Identifier.of("eat"), (itemStack, clientWorld, livingEntity, i) -> {
                 if (livingEntity == null) {
                     return 0.0F;
                 }
                 if(livingEntity instanceof OtherClientPlayerEntity) {
-                    if(itemStack.getMaxUseTime() > 16) {
-                        return livingEntity.getActiveItem() != itemStack ? 0.0F : ((float)livingEntity.getItemUseTime() / (float)itemStack.getMaxUseTime()) % 1;
+                    if(itemStack.getMaxUseTime(livingEntity) > 16) {
+                        return livingEntity.getActiveItem() != itemStack ? 0.0F : ((float)livingEntity.getItemUseTime() / (float)itemStack.getMaxUseTime(livingEntity)) % 1;
                     }
                     else {
                         return livingEntity.getActiveItem() != itemStack ? 0.0F : ((float)livingEntity.getItemUseTime() / 32.0f) % 0.5F;
                     }
                 }
-                return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / 30.0F;
+                return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime(livingEntity) - livingEntity.getItemUseTimeLeft()) / 30.0F;
             });
 
-            ModelPredicateProviderRegistry.register(item, new Identifier("eating"), (itemStack, clientWorld, livingEntity, i) -> {
+            ModelPredicateProviderRegistry.register(item, Identifier.of("eating"), (itemStack, clientWorld, livingEntity, i) -> {
                 if (livingEntity == null) {
                     return 0.0F;
                 }
@@ -53,6 +53,6 @@ public class EatingAnimationClientMod implements ClientModInitializer {
     }
 
     public static Identifier locate(String path) {
-        return new Identifier(path);
+        return Identifier.of(path);
     }
 }

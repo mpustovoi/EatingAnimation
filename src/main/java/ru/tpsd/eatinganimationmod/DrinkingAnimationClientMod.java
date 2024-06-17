@@ -16,14 +16,14 @@ public class DrinkingAnimationClientMod implements ClientModInitializer {
     @Override
     public void onInitializeClient() {
         for(Item item : VANILLA_POTIONS) {
-            ModelPredicateProviderRegistry.register(item, new Identifier("drink"), (itemStack, clientWorld, livingEntity, i) -> {
+            ModelPredicateProviderRegistry.register(item, Identifier.of("drink"), (itemStack, clientWorld, livingEntity, i) -> {
                 if (livingEntity == null) {
                     return 0.0F;
                 }
-                return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime() - livingEntity.getItemUseTimeLeft()) / 30.0F;
+                return livingEntity.getActiveItem() != itemStack ? 0.0F : (itemStack.getMaxUseTime(livingEntity) - livingEntity.getItemUseTimeLeft()) / 30.0F;
             });
 
-            ModelPredicateProviderRegistry.register(item, new Identifier("drinking"), (itemStack, clientWorld, livingEntity, i) -> {
+            ModelPredicateProviderRegistry.register(item, Identifier.of("drinking"), (itemStack, clientWorld, livingEntity, i) -> {
                 if (livingEntity == null) {
                     return 0.0F;
                 }
