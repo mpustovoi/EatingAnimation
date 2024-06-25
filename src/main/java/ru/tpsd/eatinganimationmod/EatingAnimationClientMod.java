@@ -53,6 +53,6 @@ public class EatingAnimationClientMod implements ClientModInitializer {
     }
 
     public static Identifier locate(String path) {
-        return Identifier.of(path);
+        return Identifier.ofVanilla(path);
     }
 }
